@@ -1,13 +1,14 @@
-import { IResponseListProjects } from '@/@types/project'
-import { AdminContext } from '@/contexts/AdminContext'
-import { useDeleteProject } from '@/hooks/projects/deleteProject'
-import { useListProjects } from '@/hooks/projects/listProjects'
 import { useRouter } from 'next/navigation'
 import { useContext, useEffect, useState } from 'react'
 import toast from 'react-hot-toast'
 import { FaArrowDown, FaArrowUp } from 'react-icons/fa6'
 
-export function useDashboardHook() {
+import { IResponseListProjects } from '@/@types/project'
+import { AdminContext } from '@/contexts/AdminContext'
+import { useDeleteProject } from '@/hooks/projects/deleteProject'
+import { useListProjects } from '@/hooks/projects/listProjects'
+
+export function useProjects() {
   const [projects, setProjects] = useState<IResponseListProjects[]>([])
   const [search, setSearch] = useState('')
   const [sortConfig, setSortConfig] = useState<{

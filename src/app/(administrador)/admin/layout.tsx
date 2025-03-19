@@ -1,4 +1,7 @@
+import 'react-circular-progressbar/dist/styles.css'
+
 import type { Metadata } from 'next'
+
 import { Header } from '@/components/Header'
 import { AdminContextProvider } from '@/contexts/AdminContext'
 

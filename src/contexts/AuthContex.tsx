@@ -57,8 +57,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
     authChannel.onmessage = (message) => {
       switch (message.data) {
         case 'signOut':
-          router.push('/admin/login')
-          // window.location.reload()
+          // router.push('/admin/login')
           authChannel.close()
           break
         default:
@@ -76,7 +75,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
         JSON.parse(data)
       setUser({ user_id, user_email, expiry_timestamp, user_name, token })
     } else if (pathname.includes('admin/') || pathname.includes('admin')) {
-      router.push('/admin/login')
+      // router.push('/admin/login')
     }
   }, [router, pathname])
 

@@ -1,6 +1,7 @@
 'use client'
 
 import { Button } from '@/components/Button'
+
 import { useStatusHook } from './useStatusHook'
 
 export default function Status() {
