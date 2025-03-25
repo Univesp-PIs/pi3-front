@@ -51,7 +51,7 @@ export default function Login() {
 
   useEffect(() => {
     if (isAuthenticated) {
-      router.push("/admin/dashboard");
+      router.push("/admin/projetos");
     }
   }, [isAuthenticated, router]);
 
@@ -74,7 +74,7 @@ export default function Login() {
 
     if (fnSignIn) {
       reset()
-      router.push('/admin/dashboard')
+      router.push('/admin/projetos')
     }
   }
 

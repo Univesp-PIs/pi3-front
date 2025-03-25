@@ -1,10 +1,11 @@
+import { useMutation } from '@tanstack/react-query'
+import { useRouter } from 'next/navigation'
+import toast from 'react-hot-toast'
+
 import { ICreateProjectParams } from '@/@types/project'
 import { api } from '@/services/apiClient'
 import { AxiosErrorWithMessage } from '@/services/errorMessage'
 import { queryClient } from '@/services/queryClient'
-import { useMutation } from '@tanstack/react-query'
-import { useRouter } from 'next/navigation'
-import toast from 'react-hot-toast'
 
 const fetchCreateProject = async (params: ICreateProjectParams) => {
   const { data } = await api.post(`/engsol/create_project`, {
@@ -25,7 +26,7 @@ export const useCreateProject = () => {
         queryKey: ['list-projects'],
       })
 
-      router.push('/admin/dashboard')
+      router.push('/admin/projetos')
     },
     onError: (error: AxiosErrorWithMessage) => {
       console.log(error.response.data.error)

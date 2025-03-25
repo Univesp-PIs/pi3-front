@@ -1,21 +1,23 @@
 'use client'
 
+import { format } from 'date-fns'
+import { ptBR } from 'date-fns/locale'
+import { useRouter } from 'next/navigation'
 import { FormEvent, useContext, useEffect, useState } from 'react'
 import { AiOutlinePlusCircle } from 'react-icons/ai'
-import { AdminContext } from '@/contexts/AdminContext'
-import { Button } from '@/components/Button'
-import { useRouter } from 'next/navigation'
-import { ModalGeneric } from '@/components/Modal'
-import { useGetProject } from '@/hooks/projects/getProject'
-import { useListStatus } from '@/hooks/status/listStatus'
+
 import { IResponseGetProject } from '@/@types/project'
-import { DraggableItemComponent } from './stepItem'
-import { SkeletonProject } from '../../skeleton'
-import { format } from 'date-fns'
-import { formatedProject, validateProject } from '../../utils'
-import { useUpdateProject } from '@/hooks/projects/updateProject'
+import { Button } from '@/components/Button'
+import { ModalGeneric } from '@/components/Modal'
+import { AdminContext } from '@/contexts/AdminContext'
 import { useDeleteProject } from '@/hooks/projects/deleteProject'
-import { ptBR } from 'date-fns/locale'
+import { useGetProject } from '@/hooks/projects/getProject'
+import { useUpdateProject } from '@/hooks/projects/updateProject'
+import { useListStatus } from '@/hooks/status/listStatus'
+
+import { SkeletonProject } from '../../skeleton'
+import { formatedProject, validateProject } from '../../utils'
+import { DraggableItemComponent } from './stepItem'
 
 export default function EditarProjeto({
   params,
@@ -292,7 +294,7 @@ export default function EditarProjeto({
               button={<Button variant="secondary" title="Voltar" />}
               title="Voltar para o início"
               description="Deseja realmente voltar para o início? Todas as alterações não salvas serão perdidas."
-              onConfirm={() => router.push('/admin/dashboard')}
+              onConfirm={() => router.push('/admin/projetos')}
             />
             <Button
               type="submit"

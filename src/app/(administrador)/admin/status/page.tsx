@@ -136,7 +136,7 @@ export default function Status() {
                 type="button"
                 variant="secondary"
                 widthFull
-                onClick={() => router.push('/admin/dashboard')}
+                onClick={() => router.push('/admin/projetos')}
                 title="Voltar"
               />
               <Button

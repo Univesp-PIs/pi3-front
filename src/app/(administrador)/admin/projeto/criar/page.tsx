@@ -1,18 +1,20 @@
 'use client'
 
+import { format } from 'date-fns'
+import { ptBR } from 'date-fns/locale'
+import { useRouter } from 'next/navigation'
 import { FormEvent, useContext, useEffect, useState } from 'react'
 import { AiOutlinePlusCircle } from 'react-icons/ai'
-import { AdminContext } from '@/contexts/AdminContext'
-import { Button } from '@/components/Button'
-import { useRouter } from 'next/navigation'
-import { ModalGeneric } from '@/components/Modal'
-import { useListStatus } from '@/hooks/status/listStatus'
+
 import { IResponseGetProject } from '@/@types/project'
-import { DraggableItemComponent } from './stepItem'
-import { format } from 'date-fns'
-import { formatedProject, validateProject } from '../utils'
+import { Button } from '@/components/Button'
+import { ModalGeneric } from '@/components/Modal'
+import { AdminContext } from '@/contexts/AdminContext'
 import { useCreateProject } from '@/hooks/projects/createProject'
-import { ptBR } from 'date-fns/locale'
+import { useListStatus } from '@/hooks/status/listStatus'
+
+import { formatedProject, validateProject } from '../utils'
+import { DraggableItemComponent } from './stepItem'
 
 export default function CriarProjeto() {
   const router = useRouter()
@@ -265,9 +267,9 @@ export default function CriarProjeto() {
           <div className="flex gap-4">
             <ModalGeneric
               button={<Button variant="secondary" title="Voltar" />}
-              title="Voltar para a dashboard"
-              description="Deseja realmente voltar para a dashboard? Todas as alterações não salvas serão perdidas."
-              onConfirm={() => router.push('/admin/dashboard')}
+              title="Voltar para o início"
+              description="Deseja realmente voltar para a tela inicial? Todas as alterações não salvas serão perdidas."
+              onConfirm={() => router.push('/admin/projetos')}
             />
             <Button
               type="submit"
