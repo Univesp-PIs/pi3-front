@@ -1,6 +1,8 @@
 type IProject = {
   id: number
   name: string
+  cost_estimate: number
+  delivered_date: string
   key?: string
 }
 
