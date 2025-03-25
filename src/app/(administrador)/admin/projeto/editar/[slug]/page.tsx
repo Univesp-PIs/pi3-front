@@ -2,9 +2,10 @@
 
 import { format } from 'date-fns'
 import { ptBR } from 'date-fns/locale'
-import { useRouter } from 'next/navigation'
+import { notFound, useRouter } from 'next/navigation'
 import { FormEvent, useContext, useEffect, useState } from 'react'
 import { CurrencyInput } from 'react-currency-mask'
+import toast from 'react-hot-toast'
 import { AiOutlinePlusCircle } from 'react-icons/ai'
 
 import { IResponseGetProject } from '@/@types/project'
@@ -172,9 +173,10 @@ export default function EditarProjeto({
     }
   }
 
-  // return isLoadingProject || errorProject ? (
   return isLoadingProject ? (
     <SkeletonProject />
+  ) : errorProject ? (
+    toast.error('Ocorreu um erro ao carregar o projeto') && notFound()
   ) : (
     <section className="w-full flex justify-center items-center min-h-[calc(100vh-95.83px)]">
       <div className="w-full max-w-screen-xl px-4 xl:px-0 py-4 lg:py-20 flex justify-center">
