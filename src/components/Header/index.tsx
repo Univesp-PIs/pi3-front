@@ -2,17 +2,19 @@
 
 import Image from 'next/image'
 import Link from 'next/link'
-import { FaFacebookF, FaInstagram } from 'react-icons/fa6'
-import logo from '@/assets/images/logo.svg'
-import { mockLinks } from '@/mocks/mockLinks'
-import { FaGlobe } from 'react-icons/fa'
 import { usePathname } from 'next/navigation'
 import { useContext, useEffect, useState } from 'react'
-import { AdminContext } from '@/contexts/AdminContext'
-import { MdOutlineAdminPanelSettings } from 'react-icons/md'
-import { MenuAdmin } from '../MenuAdmin'
+import { FaGlobe } from 'react-icons/fa'
+import { FaFacebookF, FaInstagram } from 'react-icons/fa6'
 import { LuLogOut } from 'react-icons/lu'
+import { MdOutlineAdminPanelSettings } from 'react-icons/md'
+
+import logo from '@/assets/images/logo.svg'
+import { AdminContext } from '@/contexts/AdminContext'
 import { AuthContext } from '@/contexts/AuthContex'
+import { mockLinks } from '@/mocks/mockLinks'
+
+import { MenuAdmin } from '../MenuAdmin'
 
 export function Header() {
   const { facebookURL, instagramURL, website } = mockLinks
@@ -43,7 +45,7 @@ export function Header() {
     >
       <div className="w-full max-w-screen-xl px-4 xl:px-0 py-4 flex justify-between">
         <Link
-          href={isAuthenticated ? '/admin/dashboard' : '/'}
+          href={isAuthenticated ? '/admin/projetos' : '/'}
           className="max-w-[300px] w-full hover:scale-[1.05] duration-300"
         >
           <Image

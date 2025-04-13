@@ -26,7 +26,7 @@ export const mockLinks: IMockLinks = {
   instagramURL: 'https://www.instagram.com/engsolempresasolar',
   address: {
     link: 'https://maps.app.goo.gl/Ze8wuKNaE19iJq5r6',
-    text: 'Av. Bairro Verde, 2140 - Piracicaba São Paulo',
+    text: 'Av. Dr. Paulo de Moraes, 374 - Paulista, Piracicaba - SP, 13400-853',
   },
   whatsapp: {
     link: 'https://wa.me/+5519999109020',

@@ -1,6 +1,7 @@
 'use client'
 
 import { Button } from '@/components/Button'
+
 import { useStatusHook } from './useStatusHook'
 
 export default function Status() {
@@ -135,7 +136,7 @@ export default function Status() {
                 type="button"
                 variant="secondary"
                 widthFull
-                onClick={() => router.push('/admin/dashboard')}
+                onClick={() => router.push('/admin/projetos')}
                 title="Voltar"
               />
               <Button

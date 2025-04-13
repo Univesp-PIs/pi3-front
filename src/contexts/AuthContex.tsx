@@ -1,18 +1,19 @@
 /* eslint-disable camelcase */
 'use client'
 
+import { usePathname, useRouter } from 'next/navigation'
+import { destroyCookie, parseCookies, setCookie } from 'nookies'
 import {
+  createContext,
   Dispatch,
   ReactNode,
   SetStateAction,
-  createContext,
   useEffect,
   useState,
 } from 'react'
-import { usePathname, useRouter } from 'next/navigation'
-import { destroyCookie, parseCookies, setCookie } from 'nookies'
-import { api } from '../services/apiClient'
 import toast from 'react-hot-toast'
+
+import { api } from '../services/apiClient'
 
 type User = {
   token: string
@@ -57,8 +58,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
     authChannel.onmessage = (message) => {
       switch (message.data) {
         case 'signOut':
-          router.push('/admin/login')
-          // window.location.reload()
+          // router.push('/admin/login')
           authChannel.close()
           break
         default:
@@ -76,7 +76,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
         JSON.parse(data)
       setUser({ user_id, user_email, expiry_timestamp, user_name, token })
     } else if (pathname.includes('admin/') || pathname.includes('admin')) {
-      router.push('/admin/login')
+      // router.push('/admin/login')
     }
   }, [router, pathname])
 
@@ -117,7 +117,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
       if (parseCookies()['engsol.token']) {
         toast.success('Login efetuado')
-        router.push('/admin/dashboard')
+        router.push('/admin/projetos')
       }
 
       // api.defaults.headers.Authorization = `Bearer ${token}`

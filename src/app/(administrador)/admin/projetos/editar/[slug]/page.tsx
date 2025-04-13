@@ -1,61 +1,64 @@
 'use client'
 
+import { format } from 'date-fns'
+import { ptBR } from 'date-fns/locale'
+import { useRouter } from 'next/navigation'
 import { FormEvent, useContext, useEffect, useState } from 'react'
 import { AiOutlinePlusCircle } from 'react-icons/ai'
-import { AdminContext } from '@/contexts/AdminContext'
-import { Button } from '@/components/Button'
-import { useRouter } from 'next/navigation'
-import { ModalGeneric } from '@/components/Modal'
-import { useListStatus } from '@/hooks/status/listStatus'
-import { IResponseGetProject } from '@/@types/project'
-import { DraggableItemComponent } from './stepItem'
-import { format } from 'date-fns'
-import { formatedProject, validateProject } from '../utils'
-import { useCreateProject } from '@/hooks/projects/createProject'
-import { ptBR } from 'date-fns/locale'
 
-export default function CriarProjeto() {
+import { IResponseGetProject } from '@/@types/project'
+import { Button } from '@/components/Button'
+import { ModalGeneric } from '@/components/Modal'
+import { AdminContext } from '@/contexts/AdminContext'
+import { useDeleteProject } from '@/hooks/projects/deleteProject'
+import { useGetProject } from '@/hooks/projects/getProject'
+import { useUpdateProject } from '@/hooks/projects/updateProject'
+import { useListStatus } from '@/hooks/status/listStatus'
+
+import { SkeletonProject } from '../../skeleton'
+import { formatedProject, validateProject } from '../../utils'
+import { DraggableItemComponent } from './stepItem'
+
+export default function EditarProjeto({
+  params,
+}: {
+  params: { slug: string }
+}) {
   const router = useRouter()
 
   const {
-    mutateAsync: mutateCreateProject,
-    isPending: isPendingCreateProject,
-  } = useCreateProject()
+    data: dataProject,
+    isLoading: isLoadingProject,
+    error: errorProject,
+  } = useGetProject(params.slug)
+
+  const {
+    mutateAsync: mutateUpdateProject,
+    isPending: isPendingUpdateProject,
+  } = useUpdateProject()
+
+  const {
+    mutateAsync: mutateDeleteProject,
+    isPending: isPendingDeleteProject,
+  } = useDeleteProject()
+
   const { data: dataListStatus } = useListStatus()
 
   const { setTitleHeader } = useContext(AdminContext)
-  const [dataApiProject, setDataApiProject] = useState<IResponseGetProject>({
-    project: {
-      name: '',
-      id: 0,
-    },
-    client: {
-      name: '',
-      email: '',
-      id: 0,
-    },
-    timeline: [
-      {
-        ranking: {
-          id: 0,
-          rank: '1',
-          last_update: format(new Date(), 'yyyy-MM-dd', {
-            locale: ptBR,
-          }),
-          note: 'waiting',
-          description: '',
-          condition: {
-            id: 0,
-            name: '',
-          },
-        },
-      },
-    ],
-  })
+  const [dataApiProject, setDataApiProject] = useState<IResponseGetProject>()
+  const [timelineDeleted, setTimelineDeleted] = useState<
+    IResponseGetProject['timeline']
+  >([])
 
   useEffect(() => {
-    setTitleHeader('Criar projeto')
+    setTitleHeader(`Editar projeto: ${dataApiProject?.project.name}`)
   }, [setTitleHeader, dataApiProject?.project.name])
+
+  useEffect(() => {
+    if (dataProject && !isLoadingProject) {
+      setDataApiProject(dataProject)
+    }
+  }, [dataProject, isLoadingProject])
 
   async function handleSubmitContact(e: FormEvent) {
     e.preventDefault()
@@ -72,11 +75,33 @@ export default function CriarProjeto() {
 
     const formattedData = formatedProject(dataApiProject)
 
-    // Cria o projeto
-    await mutateCreateProject(formattedData)
+    const formattedTimelineDeleted = timelineDeleted.map((step) => ({
+      ...step,
+      ranking: { ...step.ranking, rank: '0', delete: true },
+    }))
+
+    const dataToSave = {
+      ...formattedData,
+      timeline: [...formattedData.timeline, ...formattedTimelineDeleted],
+    }
+
+    // Atualiza o projeto
+    await mutateUpdateProject(dataToSave)
+
+    setTimelineDeleted([])
+  }
+
+  async function handleDeleteProject(id: number) {
+    await mutateDeleteProject(id)
   }
 
   const removeStep = (index: number) => {
+    const step = dataApiProject?.timeline[index]
+
+    if (step?.ranking.id) {
+      setTimelineDeleted((prev) => [...(prev || []), step])
+    }
+
     setDataApiProject((prevSteps) => {
       const newSteps = prevSteps?.timeline.filter(
         (_, indexValue) => indexValue !== index,
@@ -146,8 +171,10 @@ export default function CriarProjeto() {
     }
   }
 
-  return (
-    <section className="w-full flex justify-center items-center">
+  return isLoadingProject || errorProject ? (
+    <SkeletonProject />
+  ) : (
+    <section className="w-full flex justify-center items-center min-h-[calc(100vh-95.83px)]">
       <div className="w-full max-w-screen-xl px-4 xl:px-0 py-4 lg:py-20 flex justify-center">
         <form
           className="w-full flex flex-col gap-16 items-center"
@@ -232,7 +259,7 @@ export default function CriarProjeto() {
             </div>
           </div>
           <ul className="characters flex gap-8 md:gap-4 flex-wrap flex-row items-start w-full">
-            <div className="hidden md:flex flex-col gap-6 items-center md:items-start w-fit">
+            <div className="hidden lg:flex flex-col gap-6 items-center md:items-start w-fit">
               <h3 className="text-2xl font-bold">
                 Etapa<span className="text-red-500 font-bold"> *</span>
               </h3>
@@ -265,15 +292,32 @@ export default function CriarProjeto() {
           <div className="flex gap-4">
             <ModalGeneric
               button={<Button variant="secondary" title="Voltar" />}
-              title="Voltar para a dashboard"
-              description="Deseja realmente voltar para a dashboard? Todas as alterações não salvas serão perdidas."
-              onConfirm={() => router.push('/admin/dashboard')}
+              title="Voltar para o início"
+              description="Deseja realmente voltar para o início? Todas as alterações não salvas serão perdidas."
+              onConfirm={() => router.push('/admin/projetos')}
             />
             <Button
               type="submit"
               variant="primary"
-              isLoading={isPendingCreateProject}
+              isLoading={isPendingUpdateProject}
               title="Salvar"
+            />
+
+            <ModalGeneric
+              button={
+                <Button
+                  variant="error"
+                  isLoading={isPendingDeleteProject}
+                  title="Excluir"
+                />
+              }
+              title="Excluir projeto"
+              description="Deseja realmente excluir este projeto?"
+              onConfirm={() =>
+                dataApiProject
+                  ? handleDeleteProject(dataApiProject.project.id)
+                  : {}
+              }
             />
           </div>
         </form>

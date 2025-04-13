@@ -1,7 +1,8 @@
-import { mockLinks } from '@/mocks/mockLinks'
 import Link from 'next/link'
 import { FaMapMarkerAlt } from 'react-icons/fa'
 import { FaEnvelope, FaWhatsapp } from 'react-icons/fa6'
+
+import { mockLinks } from '@/mocks/mockLinks'
 
 export function Footer() {
   const { address, email, phone, whatsapp } = mockLinks
