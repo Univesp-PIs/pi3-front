@@ -4,6 +4,7 @@ import { format } from 'date-fns'
 import { ptBR } from 'date-fns/locale'
 import { useRouter } from 'next/navigation'
 import { FormEvent, useContext, useEffect, useState } from 'react'
+import { CurrencyInput } from 'react-currency-mask'
 import { AiOutlinePlusCircle } from 'react-icons/ai'
 
 import { IResponseGetProject } from '@/@types/project'
@@ -29,6 +30,8 @@ export default function CriarProjeto() {
   const [dataApiProject, setDataApiProject] = useState<IResponseGetProject>({
     project: {
       name: '',
+      cost_estimate: 0,
+      delivered_date: '',
       id: 0,
     },
     client: {
@@ -224,6 +227,67 @@ export default function CriarProjeto() {
                         ({
                           ...prev,
                           client: { ...prev?.client, email: e.target.value },
+                        }) as IResponseGetProject,
+                    )
+                  }}
+                  className="w-full p-2 border border-gray-300 rounded-md"
+                  placeholder="Email de notificação"
+                />
+              </div>
+            </div>
+            <div className="flex flex-col md:flex-row gap-8">
+              <div className="w-full text-center md:text-left flex flex-col gap-2">
+                <label
+                  className="cursor-pointer font-bold text-xl"
+                  htmlFor="cost_estimate"
+                >
+                  Estimativa de custo
+                  <span className="text-red-500 font-bold"> *</span>
+                </label>
+                <CurrencyInput
+                  value={dataApiProject?.project.cost_estimate}
+                  onChangeValue={(_, value) => {
+                    setDataApiProject(
+                      (prev) =>
+                        ({
+                          ...prev,
+                          project: {
+                            ...prev?.project,
+                            cost_estimate: value,
+                          },
+                        }) as IResponseGetProject,
+                    )
+                  }}
+                  InputElement={
+                    <input
+                      type="text"
+                      id="cost_estimate"
+                      className="w-full p-2 border border-gray-300 rounded-md"
+                      placeholder="Digite a estimativa de custo"
+                    />
+                  }
+                />
+              </div>
+              <div className="w-full text-center md:text-left flex flex-col gap-2">
+                <label
+                  className="cursor-pointer font-bold text-xl"
+                  htmlFor="delivered_date"
+                >
+                  Data estimada de entrega
+                </label>
+                <input
+                  type="date"
+                  id="delivered_date"
+                  value={dataApiProject?.project.delivered_date}
+                  onChange={(e) => {
+                    setDataApiProject(
+                      (prev) =>
+                        ({
+                          ...prev,
+                          project: {
+                            ...prev?.project,
+                            delivered_date: e.target.value,
+                          },
                         }) as IResponseGetProject,
                     )
                   }}
