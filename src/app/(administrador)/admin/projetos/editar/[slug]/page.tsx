@@ -2,15 +2,10 @@
 
 import { format } from 'date-fns'
 import { ptBR } from 'date-fns/locale'
-<<<<<<< HEAD:src/app/(administrador)/admin/projeto/editar/[slug]/page.tsx
 import { notFound, useRouter } from 'next/navigation'
 import { FormEvent, useContext, useEffect, useState } from 'react'
 import { CurrencyInput } from 'react-currency-mask'
 import toast from 'react-hot-toast'
-=======
-import { useRouter } from 'next/navigation'
-import { FormEvent, useContext, useEffect, useState } from 'react'
->>>>>>> main:src/app/(administrador)/admin/projetos/editar/[slug]/page.tsx
 import { AiOutlinePlusCircle } from 'react-icons/ai'
 
 import { IResponseGetProject } from '@/@types/project'

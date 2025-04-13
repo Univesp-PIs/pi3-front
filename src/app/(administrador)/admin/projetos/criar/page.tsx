@@ -4,10 +4,7 @@ import { format } from 'date-fns'
 import { ptBR } from 'date-fns/locale'
 import { useRouter } from 'next/navigation'
 import { FormEvent, useContext, useEffect, useState } from 'react'
-<<<<<<< HEAD:src/app/(administrador)/admin/projeto/criar/page.tsx
 import { CurrencyInput } from 'react-currency-mask'
-=======
->>>>>>> main:src/app/(administrador)/admin/projetos/criar/page.tsx
 import { AiOutlinePlusCircle } from 'react-icons/ai'
 
 import { IResponseGetProject } from '@/@types/project'
