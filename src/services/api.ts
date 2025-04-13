@@ -1,8 +1,9 @@
 import axios, { AxiosError } from 'axios'
-import { destroyCookie, parseCookies } from 'nookies'
-import { AuthTokenError } from '../errors/AuthTokenError'
 import { GetServerSidePropsContext } from 'next'
 import { useRouter } from 'next/router'
+import { destroyCookie } from 'nookies'
+
+import { AuthTokenError } from '../errors/AuthTokenError'
 
 interface AxiosErrorResponse {
   error?: string
@@ -18,15 +19,21 @@ type FailedRequestQueue = {
 const failedRequestsQueue = Array<FailedRequestQueue>()
 
 export function setupAPIClient(ctx: Context = undefined) {
+  const cookies = {
+    'engsol.token':
+      'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxfQ.y0sMLOaCgou9KaxH7xw8JBcnq3K_3r89SXqfCXOmQD4',
+  }
+
   const api = axios.create({
     baseURL: 'https://engsol-django-render.onrender.com',
-    // headers: {
-    //   Authorization: `Bearer ${cookies['engsol.token']}`,
-    // },
+    headers: {
+      // Authorization: `Bearer ${cookies['engsol.token']}`,
+      Authorization: `Bearer ${cookies['engsol.token']}`,
+    },
   })
 
   api.interceptors.request.use((config) => {
-    const cookies = parseCookies(ctx) // Atualiza o cookie em cada requisição
+    // const cookies = parseCookies(ctx) // Atualiza o cookie em cada requisição
     config.headers.Authorization = `Bearer ${cookies['engsol.token']}`
     return config
   })

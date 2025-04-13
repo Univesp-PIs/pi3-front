@@ -1,12 +1,12 @@
+import clsx from 'clsx'
 import { ButtonHTMLAttributes } from 'react'
 import { BiLoaderAlt } from 'react-icons/bi'
-import clsx from 'clsx'
 
 interface IButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: 'primary' | 'secondary' | 'error' | 'success'
   isLoading?: boolean
   widthFull?: boolean
-  title: string
+  title?: string
 }
 
 const VARIANT_CLASSES = {
@@ -22,6 +22,7 @@ export function Button({
   title,
   widthFull,
   className,
+  children,
   ...props
 }: IButtonProps) {
   const baseClasses =
@@ -50,7 +51,7 @@ export function Button({
           size={25}
         />
       ) : (
-        title
+        title || children
       )}
     </button>
   )
