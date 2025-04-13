@@ -1,7 +1,6 @@
 import { useRouter } from 'next/navigation'
 import { useContext, useEffect, useState } from 'react'
 import toast from 'react-hot-toast'
-import { FaArrowDown, FaArrowUp } from 'react-icons/fa6'
 
 import { IResponseListProjects } from '@/@types/project'
 import { AdminContext } from '@/contexts/AdminContext'
@@ -9,14 +8,14 @@ import { useDeleteProject } from '@/hooks/projects/deleteProject'
 import { useListProjects } from '@/hooks/projects/listProjects'
 
 export function useProjects() {
-  const [projects, setProjects] = useState<IResponseListProjects[]>([])
   const [search, setSearch] = useState('')
-  const [sortConfig, setSortConfig] = useState<{
-    key:
-      | keyof IResponseListProjects['project']
-      | keyof IResponseListProjects['client']
-    direction: 'ascending' | 'descending' | null
-  } | null>(null)
+  const [ascOrDescTable, setAscOrDescTable] = useState({
+    data: 'asc',
+    project: 'asc',
+  })
+  const [sortedProjects, setSortedProjects] = useState<IResponseListProjects[]>(
+    [],
+  )
 
   const [isCopied, setIsCopied] = useState({
     id: 0,
@@ -69,7 +68,7 @@ export function useProjects() {
 
   useEffect(() => {
     if (dataListProjects) {
-      setProjects(dataListProjects)
+      setSortedProjects(dataListProjects)
     }
   }, [dataListProjects])
 
@@ -77,75 +76,62 @@ export function useProjects() {
     setSearch(e.target.value)
   }
 
-  const filteredProjects = projects
-    ? projects.filter(
-        (project: IResponseListProjects) =>
-          project.client.name.toLowerCase().includes(search.toLowerCase()) ||
-          project.project.name.toLowerCase().includes(search.toLowerCase()) ||
-          project.project.key?.toLowerCase().includes(search.toLowerCase()),
+  // função do filteredProjects
+  useEffect(() => {
+    if (dataListProjects) {
+      const filtered = dataListProjects.filter(
+        (project: IResponseListProjects) => {
+          const searchLower = search.toLowerCase()
+          return (
+            project.client.name.toLowerCase().includes(searchLower) ||
+            project.client.email.toLowerCase().includes(searchLower) ||
+            project.project.name.toLowerCase().includes(searchLower) ||
+            project.project.key?.toLowerCase().includes(searchLower)
+          )
+        },
       )
-    : []
 
-  // const sortedProjects = [...filteredProjects].sort((a, b) => {
-  //   if (sortConfig !== null) {
-  //     const aKey =
-  //       sortConfig.key === 'name' || sortConfig.key === 'key'
-  //         ? a.project[sortConfig.key]
-  //         : a.client[sortConfig.key as keyof IResponseListProjects['client']]
-  //     const bKey =
-  //       sortConfig.key === 'name' || sortConfig.key === 'key'
-  //         ? b.project[sortConfig.key]
-  //         : b.client[sortConfig.key as keyof IResponseListProjects['client']]
-  //     if (aKey && bKey && aKey < bKey) {
-  //       return sortConfig.direction === 'ascending' ? -1 : 1
-  //     }
-  //     if (aKey && bKey && aKey > bKey) {
-  //       return sortConfig.direction === 'ascending' ? 1 : -1
-  //     }
-  //   }
-  //   return 0
-  // })
+      if (ascOrDescTable.data === 'asc') {
+        filtered.sort((a, b) => {
+          return (
+            new Date(a.project.delivered_date).getTime() -
+            new Date(b.project.delivered_date).getTime()
+          )
+        })
+      } else {
+        filtered.sort((a, b) => {
+          return (
+            new Date(b.project.delivered_date).getTime() -
+            new Date(a.project.delivered_date).getTime()
+          )
+        })
+      }
+      if (ascOrDescTable.project === 'asc') {
+        filtered.sort((a, b) => {
+          return a.project.name.localeCompare(b.project.name)
+        })
+      }
+      if (ascOrDescTable.project === 'desc') {
+        filtered.sort((a, b) => {
+          return b.project.name.localeCompare(a.project.name)
+        })
+      }
 
-  const sortedProjects = [...filteredProjects]
-
-  const requestSort = (
-    key:
-      | keyof IResponseListProjects['project']
-      | keyof IResponseListProjects['client'],
-  ) => {
-    let direction: 'ascending' | 'descending' = 'ascending'
-    if (
-      sortConfig &&
-      sortConfig.key === key &&
-      sortConfig.direction === 'ascending'
-    ) {
-      direction = 'descending'
+      setSortedProjects(filtered)
     }
-    setSortConfig({ key, direction })
-  }
+  }, [search, dataListProjects, ascOrDescTable])
 
-  const getSortIcon = (
-    key:
-      | keyof IResponseListProjects['project']
-      | keyof IResponseListProjects['client'],
-  ) => {
-    if (!sortConfig || sortConfig.key !== key) {
-      return null
-    }
-    if (sortConfig.direction === 'ascending') {
-      return <FaArrowUp className="inline ml-1" />
-    }
-    return <FaArrowDown className="inline ml-1" />
+  // Função para ordenar projetos
+  function handleSort(option: 'data' | 'project') {
+    setAscOrDescTable((prev) => ({
+      ...prev,
+      [option]: prev[option] === 'asc' ? 'desc' : 'asc',
+    }))
   }
 
   return {
     search,
-    handleSearch,
-    handleCopy,
-    requestSort,
-    getSortIcon,
-    refetchListProjects,
-    handleDeleteProject,
+    ascOrDescTable,
     isPendingDeleteProject,
     variablesDeleteProject,
     isFetchingListProjects,
@@ -154,5 +140,10 @@ export function useProjects() {
     router,
     sortedProjects,
     isCopied,
+    handleSearch,
+    handleSort,
+    handleCopy,
+    refetchListProjects,
+    handleDeleteProject,
   }
 }

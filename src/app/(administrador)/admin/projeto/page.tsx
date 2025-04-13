@@ -1,6 +1,8 @@
 'use client'
 
 import toast from 'react-hot-toast'
+import { FaInfoCircle } from 'react-icons/fa'
+import { FaArrowDown, FaArrowUp } from 'react-icons/fa6'
 import { HiOutlineRefresh } from 'react-icons/hi'
 import { MdOutlineCopyAll } from 'react-icons/md'
 
@@ -11,10 +13,6 @@ import { useProjects } from './useProjects'
 
 export default function Projetos() {
   const {
-    handleSearch,
-    handleDeleteProject,
-    getSortIcon,
-    refetchListProjects,
     search,
     router,
     isFetchingListProjects,
@@ -24,62 +22,65 @@ export default function Projetos() {
     sortedProjects,
     variablesDeleteProject,
     isCopied,
+    ascOrDescTable,
+    handleSort,
+    handleSearch,
+    handleDeleteProject,
+    refetchListProjects,
     handleCopy,
   } = useProjects()
 
   return (
     <section className="w-full flex justify-center">
       <div className="w-full max-w-screen-xl flex-col px-4 xl:px-0 py-4 lg:py-20 flex gap-4">
-        <div className="flex w-full justify-end items-center gap-8">
-          <HiOutlineRefresh
-            size={25}
-            title="Atualizar Projetos"
-            className={`cursor-pointer ${isFetchingListProjects || isLoadingListProjects ? 'animate-spin' : ''}`}
-            onClick={() => refetchListProjects()}
-          />
-          <input
-            type="text"
-            placeholder="Pesquisar..."
-            value={search}
-            onChange={handleSearch}
-            className="p-2 border border-gray-300 rounded-md font-bold outline-none w-fit"
-          />
+        <div className="flex w-full justify-between gap-8">
+          <div className="flex gap-4 items-center">
+            <p className="font-semibold">Classificar tabela:</p>
+            <Button
+              title={ascOrDescTable.project === 'asc' ? 'A-Z' : 'Z-A'}
+              variant="secondary"
+              onClick={() => handleSort('project')}
+            />
+            <Button
+              variant="secondary"
+              className="flex gap-1 items-center"
+              onClick={() => handleSort('data')}
+            >
+              Data
+              {ascOrDescTable.data === 'asc' ? <FaArrowUp /> : <FaArrowDown />}
+            </Button>
+            <FaInfoCircle
+              size={25}
+              title="Como funciona os filtros?"
+              className="cursor-pointer"
+            />
+          </div>
+          <div className="flex gap-4 items-center">
+            <HiOutlineRefresh
+              size={25}
+              title="Atualizar Projetos"
+              className={`cursor-pointer ${isFetchingListProjects || isLoadingListProjects ? 'animate-spin' : ''}`}
+              onClick={() => refetchListProjects()}
+            />
+            <input
+              type="text"
+              placeholder="Pesquisar..."
+              value={search}
+              onChange={handleSearch}
+              className="p-2 border border-gray-300 rounded-md font-bold outline-none w-fit"
+            />
+          </div>
         </div>
 
         <div className="overflow-x-auto w-full">
           <table className="min-w-full bg-white border border-black">
             <thead>
               <tr className="bg-[#D9D9D9]">
-                <th
-                  // onClick={() => requestSort('name')}
-                  className="py-2 px-4 text-left cursor-pointer"
-                >
-                  Projeto {getSortIcon('name')}
-                </th>
-                <th
-                  // onClick={() => requestSort('name')}
-                  className="py-2 px-4 text-left cursor-pointer"
-                >
-                  Cliente {getSortIcon('name')}
-                </th>
-                <th
-                  // onClick={() => requestSort('email')}
-                  className="py-2 px-4 text-left cursor-pointer"
-                >
-                  Email {getSortIcon('email')}
-                </th>
-                <th
-                  // onClick={() => requestSort('email')}
-                  className="py-2 px-4 text-left cursor-pointer"
-                >
-                  Etapa {getSortIcon('email')}
-                </th>
-                <th
-                  // onClick={() => requestSort('key')}
-                  className="py-2 px-4 text-left cursor-pointer"
-                >
-                  Chave de Acesso {getSortIcon('key')}
-                </th>
+                <th className="py-2 px-4 text-left">Projeto</th>
+                <th className="py-2 px-4 text-left">Cliente</th>
+                <th className="py-2 px-4 text-left">Email</th>
+                <th className="py-2 px-4 text-left">Etapa</th>
+                <th className="py-2 px-4 text-left">Chave de Acesso</th>
                 <th className="py-2 px-4 text-left">Ações</th>
               </tr>
             </thead>
