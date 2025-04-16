@@ -58,7 +58,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
     authChannel.onmessage = (message) => {
       switch (message.data) {
         case 'signOut':
-          // router.push('/admin/login')
+          router.push('/admin/login')
           authChannel.close()
           break
         default:
@@ -76,7 +76,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
         JSON.parse(data)
       setUser({ user_id, user_email, expiry_timestamp, user_name, token })
     } else if (pathname.includes('admin/') || pathname.includes('admin')) {
-      // router.push('/admin/login')
+      router.push('/admin/login')
     }
   }, [router, pathname])
 
@@ -120,7 +120,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
         router.push('/admin/projetos')
       }
 
-      // api.defaults.headers.Authorization = `Bearer ${token}`
+      api.defaults.headers.Authorization = `Bearer ${token}`
       return true
 
       // eslint-disable-next-line @typescript-eslint/no-explicit-any

@@ -1,8 +1,6 @@
 type IProject = {
   id: number
   name: string
-  cost_estimate: number
-  delivered_date: string
   key?: string
 }
 
@@ -26,9 +24,17 @@ type ITimeline = {
   }
 }
 
+type IInformation = {
+  cost_estimate: number
+  current_cost: number
+  delivered_date: string
+  current_date: string
+}
+
 export interface IResponseListProjects {
   project: IProject
   client: IClient
+  information: IInformation
   timeline: ITimeline[]
 }
 
@@ -38,6 +44,7 @@ export interface ICreateProjectParams {
   project: IProject
   client: IClient
   timeline: ITimeline[]
+  information: IInformation
 }
 
 export type IUpdateProjectParams = IResponseGetProject
