@@ -75,6 +75,12 @@ export function AuthProvider({ children }: AuthProviderProps) {
       const { user_id, user_email, expiry_timestamp, user_name, token } =
         JSON.parse(data)
       setUser({ user_id, user_email, expiry_timestamp, user_name, token })
+    } else if (
+      pathname.includes('admin/criar-conta') ||
+      pathname.includes('admin/login')
+    ) {
+      // eslint-disable-next-line no-useless-return
+      return
     } else if (pathname.includes('admin/') || pathname.includes('admin')) {
       router.push('/admin/login')
     }

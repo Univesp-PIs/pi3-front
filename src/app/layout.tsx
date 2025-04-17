@@ -1,13 +1,13 @@
-import { Roboto } from 'next/font/google'
 import './globals.css'
-
 import '@szhsin/react-menu/dist/index.css'
 import '@szhsin/react-menu/dist/transitions/slide.css'
 
+import { Roboto } from 'next/font/google'
 import { Toaster } from 'react-hot-toast'
-import { NetworkStatusNotifier } from '@/utils/networkStatusNotifier'
-import { ProviderQueryClient } from '@/contexts/QueriesContext'
+
 import { AuthProvider } from '@/contexts/AuthContex'
+import { ProviderQueryClient } from '@/contexts/QueriesContext'
+import { NetworkStatusNotifier } from '@/utils/networkStatusNotifier'
 
 const roboto = Roboto({
   weight: ['400', '500', '700', '900'],
