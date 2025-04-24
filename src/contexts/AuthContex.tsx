@@ -137,7 +137,6 @@ export function AuthProvider({ children }: AuthProviderProps) {
   }
 
   function signOut() {
-    // console.log('signOut')
     destroyCookie(null, 'engsol.data', {
       path: '/',
     })

@@ -2,6 +2,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useContext, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -114,14 +115,14 @@ export default function Login() {
                 Senha
               </label>
               <div className="relative">
-              <input
-                type={showPassword ? 'text' : 'password'}
-                id="password"
-                {...register('password')}
-                className="w-full p-2 border border-gray-300 rounded-md"
-                placeholder="Senha de acesso"
-              />
-              {showPassword ? (
+                <input
+                  type={showPassword ? 'text' : 'password'}
+                  id="password"
+                  {...register('password')}
+                  className="w-full p-2 border border-gray-300 rounded-md"
+                  placeholder="Senha de acesso"
+                />
+                {showPassword ? (
                   <FaRegEyeSlash
                     size={20}
                     onClick={() => setShowPassword(!showPassword)}
@@ -141,13 +142,10 @@ export default function Login() {
                 </p>
               )}
             </div>
-            {/* <ReCAPTCHA
-                key={recaptchaKey}
-                sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY?.toString() || ''}
-                onChange={handleRecaptchaChange}
-                className="max-w-[300px]"
-              /> */}
-            <Button type="submit" variant="primary" title="Entrar" isLoading={isSubmitting} />
+            <div className="w-full justify-center flex">
+              <Button type="submit" variant="primary" title="Entrar" className="md:w-1/3" isLoading={isSubmitting} />
+            </div>
+            <Link href="/admin/criar-conta" className="text-center text-sm font-medium">Criar conta</Link>
           </div>
         </form>
       </div>
