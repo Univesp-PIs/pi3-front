@@ -1,6 +1,7 @@
 import './globals.css'
 import '@szhsin/react-menu/dist/index.css'
 import '@szhsin/react-menu/dist/transitions/slide.css'
+import 'react-tooltip/dist/react-tooltip.css'
 
 import { Roboto } from 'next/font/google'
 import { Toaster } from 'react-hot-toast'
