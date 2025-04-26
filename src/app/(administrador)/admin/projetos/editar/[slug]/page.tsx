@@ -42,14 +42,15 @@ export default function EditarProjeto({
     toast.error('Ocorreu um erro ao carregar o projeto') && notFound()
   ) : (
     <>
-      {dataApiProject?.average_time?.ranking && (
-        <div className="absolute top-28 right-4 z-10 bg-gray-100 rounded-md p-4 flex flex-col gap-2 items-center shadow-2xl">
-          <h3 className="text-2xl font-bold">
-            {dataApiProject.average_time.ranking} (dias)
-          </h3>
-          <p className="text-gray-400">Tempo médio para finalizar uma etapa</p>
-        </div>
-      )}
+      {typeof dataApiProject?.average_time?.ranking === 'number' &&
+        dataApiProject.average_time.ranking > 0 && (
+          <div className="absolute top-28 right-4 z-10 bg-gray-100 rounded-md p-4 flex flex-col gap-2 items-center shadow-2xl">
+            <h3 className="text-2xl font-bold">
+              {dataApiProject.average_time.ranking} (dias)
+            </h3>
+            <p className="text-gray-400">Tempo médio para finalizar uma etapa</p>
+          </div>
+        )}
       <section className="w-full flex justify-center items-center min-h-[calc(100vh-95.83px)]">
         <div className="w-full max-w-screen-xl px-4 xl:px-0 py-4 lg:py-20 flex justify-center">
           <form
