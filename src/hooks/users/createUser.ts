@@ -1,9 +1,9 @@
-// import { AxiosErrorWithMessage } from '@/services/errorMessage'
 import { useMutation } from '@tanstack/react-query'
 import { useRouter } from 'next/navigation'
 import { useContext } from 'react'
 import toast from 'react-hot-toast'
 
+import { ICreateUser } from '@/@types/user'
 import { AuthContext } from '@/contexts/AuthContex'
 import { api } from '@/services/apiClient'
 import { AxiosErrorWithMessage } from '@/services/errorMessage'

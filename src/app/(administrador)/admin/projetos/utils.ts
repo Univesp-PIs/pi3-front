@@ -1,5 +1,6 @@
-import { ICreateProjectParams, IResponseGetProject } from '@/@types/project'
 import toast from 'react-hot-toast'
+
+import { ICreateProjectParams, IResponseGetProject } from '@/@types/project'
 
 export function validateProject(data: IResponseGetProject): boolean {
   if (!data.project.name) {
@@ -14,6 +15,11 @@ export function validateProject(data: IResponseGetProject): boolean {
 
   if (!data.timeline.length) {
     toast.error('É necessário adicionar pelo menos uma etapa')
+    return true
+  }
+
+  if (!data.information.cost_estimate) {
+    toast.error('O custo estimado é obrigatório')
     return true
   }
 
@@ -40,7 +46,12 @@ export function formatedProject(
       id: data.project.id,
       name: data.project.name,
     },
-
+    information: {
+      cost_estimate: data.information.cost_estimate,
+      current_cost: data.information.current_cost,
+      delivered_date: data.information.delivered_date,
+      current_date: data.information.current_date,
+    },
     client: {
       name: data.client.name,
       email: data.client.email,

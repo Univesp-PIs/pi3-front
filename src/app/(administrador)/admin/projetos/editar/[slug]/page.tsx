@@ -271,14 +271,14 @@ export default function EditarProjeto({
                   <span className="text-red-500 font-bold"> *</span>
                 </label>
                 <CurrencyInput
-                  value={dataApiProject?.project.cost_estimate}
+                  value={dataApiProject?.information.cost_estimate}
                   onChangeValue={(_, value) => {
                     setDataApiProject(
                       (prev) =>
                         ({
                           ...prev,
-                          project: {
-                            ...prev?.project,
+                          information: {
+                            ...prev?.information,
                             cost_estimate: value,
                           },
                         }) as IResponseGetProject,
@@ -304,14 +304,14 @@ export default function EditarProjeto({
                 <input
                   type="date"
                   id="delivered_date"
-                  value={dataApiProject?.project.delivered_date}
+                  value={dataApiProject?.information.delivered_date}
                   onChange={(e) => {
                     setDataApiProject(
                       (prev) =>
                         ({
                           ...prev,
-                          project: {
-                            ...prev?.project,
+                          information: {
+                            ...prev?.information,
                             delivered_date: e.target.value,
                           },
                         }) as IResponseGetProject,

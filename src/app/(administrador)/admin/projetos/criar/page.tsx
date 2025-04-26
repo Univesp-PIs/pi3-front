@@ -24,20 +24,29 @@ export default function CriarProjeto() {
     mutateAsync: mutateCreateProject,
     isPending: isPendingCreateProject,
   } = useCreateProject()
+
   const { data: dataListStatus } = useListStatus()
 
   const { setTitleHeader } = useContext(AdminContext)
   const [dataApiProject, setDataApiProject] = useState<IResponseGetProject>({
     project: {
       name: '',
-      cost_estimate: 0,
-      delivered_date: '',
       id: 0,
     },
     client: {
       name: '',
       email: '',
       id: 0,
+    },
+    information: {
+      cost_estimate: 0,
+      current_cost: 0,
+      delivered_date: format(new Date(), 'yyyy-MM-dd', {
+        locale: ptBR,
+      }),
+      current_date: format(new Date(), 'yyyy-MM-dd', {
+        locale: ptBR,
+      }),
     },
     timeline: [
       {
@@ -245,14 +254,14 @@ export default function CriarProjeto() {
                   <span className="text-red-500 font-bold"> *</span>
                 </label>
                 <CurrencyInput
-                  value={dataApiProject?.project.cost_estimate}
+                  value={dataApiProject?.information.cost_estimate}
                   onChangeValue={(_, value) => {
                     setDataApiProject(
                       (prev) =>
                         ({
                           ...prev,
-                          project: {
-                            ...prev?.project,
+                          information: {
+                            ...prev?.information,
                             cost_estimate: value,
                           },
                         }) as IResponseGetProject,
@@ -278,21 +287,21 @@ export default function CriarProjeto() {
                 <input
                   type="date"
                   id="delivered_date"
-                  value={dataApiProject?.project.delivered_date}
+                  value={dataApiProject?.information.delivered_date}
                   onChange={(e) => {
                     setDataApiProject(
                       (prev) =>
                         ({
                           ...prev,
-                          project: {
-                            ...prev?.project,
+                          information: {
+                            ...prev?.information,
                             delivered_date: e.target.value,
                           },
                         }) as IResponseGetProject,
                     )
                   }}
                   className="w-full p-2 border border-gray-300 rounded-md"
-                  placeholder="Email de notificação"
+                  placeholder="Data estimada de entrega"
                 />
               </div>
             </div>
