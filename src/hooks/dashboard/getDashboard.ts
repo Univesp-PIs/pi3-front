@@ -8,11 +8,9 @@ import { meses } from '@/utils'
 const fetchGetDashboard = async (
   year: number,
   projectsIds?: number[],
-): Promise<IResponseDashboard | void> => {
-  // verificar se o array projectsIds é do tipo number[]
-
+): Promise<IResponseDashboard | Record<string, never>> => {
   if (!projectsIds || projectsIds.length === 0) {
-    return
+    return {}
   }
 
   const { data } = await api.post<IResponseDashboard>(`/engsol/dashboard`, {

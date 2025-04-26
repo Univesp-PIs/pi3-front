@@ -1,7 +1,6 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client'
 
-import { ReactNode, createContext, useState } from 'react'
+import { createContext, ReactNode, useState } from 'react'
 
 interface AdminContextType {
   titleHeader: string

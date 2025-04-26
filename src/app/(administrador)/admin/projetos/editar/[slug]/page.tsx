@@ -68,7 +68,7 @@ export default function EditarProjeto({
                 <input
                   type="text"
                   id="project_name"
-                  value={dataApiProject?.project.name}
+                  value={dataApiProject?.project.name ?? ''}
                   onChange={(e) => {
                     setDataApiProject(
                       (prev) =>
@@ -94,7 +94,7 @@ export default function EditarProjeto({
                   <input
                     type="text"
                     id="client_name"
-                    value={dataApiProject?.client.name}
+                    value={dataApiProject?.client.name ?? ''}
                     onChange={(e) => {
                       setDataApiProject(
                         (prev) =>
@@ -118,7 +118,7 @@ export default function EditarProjeto({
                   <input
                     type="email"
                     id="client_email"
-                    value={dataApiProject?.client.email}
+                    value={dataApiProject?.client.email ?? ''}
                     onChange={(e) => {
                       setDataApiProject(
                         (prev) =>
@@ -143,7 +143,7 @@ export default function EditarProjeto({
                     <span className="text-red-500 font-bold"> *</span>
                   </label>
                   <CurrencyInput
-                    value={dataApiProject?.information.cost_estimate}
+                    value={dataApiProject?.information.cost_estimate ?? 0}
                     onChangeValue={(_, value) => {
                       setDataApiProject(
                         (prev) =>
@@ -175,7 +175,7 @@ export default function EditarProjeto({
                     <span className="text-red-500 font-bold"> *</span>
                   </label>
                   <CurrencyInput
-                    value={dataApiProject?.information.current_cost}
+                    value={dataApiProject?.information.current_cost ?? 0}
                     onChangeValue={(_, value) => {
                       setDataApiProject(
                         (prev) =>
@@ -211,7 +211,9 @@ export default function EditarProjeto({
                   <input
                     type="date"
                     id="start_date"
-                    value={toInputDate(dataApiProject?.information.start_date)}
+                    value={
+                      toInputDate(dataApiProject?.information.start_date) ?? ''
+                    }
                     onChange={(e) => {
                       setDataApiProject(
                         (prev) =>
@@ -239,9 +241,10 @@ export default function EditarProjeto({
                   <input
                     type="date"
                     id="delivered_date"
-                    value={toInputDate(
-                      dataApiProject?.information.delivered_date,
-                    )}
+                    value={
+                      toInputDate(dataApiProject?.information.delivered_date) ??
+                      ''
+                    }
                     onChange={(e) => {
                       setDataApiProject(
                         (prev) =>

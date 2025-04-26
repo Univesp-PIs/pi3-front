@@ -54,7 +54,7 @@ export const DraggableItemComponent: FC<DraggableProps> = ({
       <div className="flex flex-col gap-4 w-full">
         <select
           className="p-2 border border-gray-300 rounded-md font-bold outline-none"
-          value={step.ranking?.condition?.id}
+          value={step.ranking?.condition?.id ?? ''}
           onChange={(e) => {
             const updateStep = {
               ranking: {
@@ -73,18 +73,13 @@ export const DraggableItemComponent: FC<DraggableProps> = ({
             })
           }}
         >
-          <option value="0" className="font-bold" disabled selected>
+          <option value="" className="font-bold" disabled>
             Selecione uma opção
           </option>
           {dataListStatus
             ?.filter((status) => status.status === true)
             .map((status) => (
-              <option
-                value={status.id}
-                className="font-bold"
-                key={status.id}
-                selected={status.id === step.ranking?.condition?.id || false}
-              >
+              <option value={status.id} className="font-bold" key={status.id}>
                 {status.name}
               </option>
             ))}
@@ -92,8 +87,7 @@ export const DraggableItemComponent: FC<DraggableProps> = ({
 
         <select
           className="p-2 border border-gray-300 rounded-md font-bold outline-none"
-          defaultValue={step.ranking.note}
-          value={step.ranking.note}
+          value={step.ranking.note ?? ''}
           onChange={(e) => {
             const newStep = {
               ...step,
@@ -110,7 +104,7 @@ export const DraggableItemComponent: FC<DraggableProps> = ({
             })
           }}
         >
-          <option value="" className="font-bold" disabled selected>
+          <option value="" className="font-bold" disabled>
             Selecione uma opção
           </option>
 
@@ -119,7 +113,6 @@ export const DraggableItemComponent: FC<DraggableProps> = ({
               value={progress.type}
               className="font-bold"
               key={progress.type}
-              selected={progress.type === step.ranking.note}
             >
               {progress.text}
             </option>

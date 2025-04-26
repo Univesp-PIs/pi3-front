@@ -32,6 +32,12 @@ export function useDashboard() {
     (_, index) => new Date().getFullYear() - index,
   )
 
+  const projectsOptions =
+    dataListProjects?.map((project) => ({
+      id: project.project.id,
+      name: project.project.name,
+    })) ?? []
+
   useEffect(() => {
     if (
       dataListProjects &&
@@ -55,11 +61,11 @@ export function useDashboard() {
   }, [filterSelected, refetchDashboard])
 
   return {
+    projectsOptions,
     errorDashboard,
     isLoadingDashboard,
     isLoadingListProjects,
     isFetchingDashboard,
-    dataListProjects,
     dataDashboard,
     filterSelected,
     router,

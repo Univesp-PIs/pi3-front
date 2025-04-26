@@ -34,19 +34,13 @@ export default function Dashboard() {
     isLoadingDashboard,
     isLoadingListProjects,
     dataDashboard,
-    dataListProjects,
     yearsProject,
     filterSelected,
     router,
+    projectsOptions,
     refetchDashboard,
     setFilterSelected,
   } = useDashboard()
-
-  const projectsOptions =
-    dataListProjects?.map((project) => ({
-      id: project.project.id,
-      name: project.project.name,
-    })) ?? []
 
   if (isLoadingListProjects || isLoadingDashboard) return <SkeletonDashboard />
 
@@ -74,7 +68,7 @@ export default function Dashboard() {
                 ))}
               </select>
             </div>
-            {dataDashboard?.delivery_projects.data.length === 0 ? (
+            {dataDashboard?.delivery_projects?.data.length === 0 ? (
               <div className="w-full h-full flex justify-center items-center">
                 <p className="text-gray-500">Nenhum dado encontrado</p>
               </div>
@@ -83,7 +77,7 @@ export default function Dashboard() {
                 <LineChart
                   width={800}
                   height={400}
-                  data={dataDashboard?.delivery_projects.data ?? []}
+                  data={dataDashboard?.delivery_projects?.data ?? []}
                 >
                   <Line
                     type="monotone"
@@ -167,7 +161,7 @@ export default function Dashboard() {
                 </ListboxOptions>
               </Listbox>
             </div>
-            {dataDashboard?.cost.data.length === 0 ? (
+            {dataDashboard?.cost?.data.length === 0 ? (
               <div className="w-full h-full flex justify-center items-center">
                 <p className="text-gray-500">Nenhum dado encontrado</p>
               </div>
@@ -176,7 +170,7 @@ export default function Dashboard() {
                 <BarChart
                   width={600}
                   height={300}
-                  data={dataDashboard?.cost.data}
+                  data={dataDashboard?.cost?.data}
                 >
                   <CartesianGrid strokeDasharray="3 3" />
                   <XAxis dataKey="name" />
@@ -207,7 +201,7 @@ export default function Dashboard() {
                       }).format(value as number)
                     }
                     labelFormatter={(label) => {
-                      const project = dataDashboard?.cost.data.find(
+                      const project = dataDashboard?.cost?.data.find(
                         (project) => project.name === label,
                       )
                       return `${project?.project.name}`
@@ -222,7 +216,7 @@ export default function Dashboard() {
           <div className="flex items-start gap-4 h-full justify-center shadow-xl hover:shadow-2xl duration-300 p-4 rounded-md">
             <CircularProgressbar
               strokeWidth={8}
-              value={dataDashboard?.percentage_projects_delivered.value ?? 0}
+              value={dataDashboard?.percentage_projects_delivered?.value ?? 0}
               styles={buildStyles({
                 pathColor: '#1C199D', // Cor do progresso
                 trailColor: '#eee', // Cor do fundo
@@ -231,14 +225,14 @@ export default function Dashboard() {
             />
             <div className="flex flex-col gap-2">
               <h3 className="font-bold text-3xl">
-                {dataDashboard?.percentage_projects_delivered.value}%
+                {dataDashboard?.percentage_projects_delivered?.value}%
               </h3>
               <p>Projetos entregues no prazo</p>
             </div>
           </div>
           <div className="flex items-start gap-4 h-full justify-center shadow-xl hover:shadow-2xl duration-300 p-4 rounded-md flex-col">
             <h3 className="font-bold text-3xl">
-              {dataDashboard?.average_time_project.value.current_days.toFixed(
+              {dataDashboard?.average_time_project?.value.current_days.toFixed(
                 0,
               ) ?? 0}{' '}
               (dias)
@@ -259,7 +253,7 @@ export default function Dashboard() {
                 style: 'currency',
                 currency: 'BRL',
               }).format(
-                dataDashboard?.average_project_cost.value.current_cost ?? 0,
+                dataDashboard?.average_project_cost?.value.current_cost ?? 0,
               )}
             </h3>
             <p>Custo médio de um projeto</p>
@@ -267,7 +261,7 @@ export default function Dashboard() {
           <div className="flex items-start gap-4 h-full justify-center shadow-xl hover:shadow-2xl duration-300 p-4 rounded-md">
             <CircularProgressbar
               strokeWidth={8}
-              value={dataDashboard?.percentage_project_cost.value ?? 0}
+              value={dataDashboard?.percentage_project_cost?.value ?? 0}
               styles={buildStyles({
                 pathColor: '#1C199D', // Cor do progresso
                 trailColor: '#eee', // Cor do fundo
@@ -276,7 +270,7 @@ export default function Dashboard() {
             />
             <div className="flex flex-col gap-2">
               <h3 className="font-bold text-3xl">
-                {dataDashboard?.percentage_project_cost.value ?? 0}%
+                {dataDashboard?.percentage_project_cost?.value ?? 0}%
               </h3>
               <p>Projetos dentro do custo</p>
             </div>
