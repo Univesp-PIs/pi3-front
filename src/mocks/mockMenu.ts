@@ -9,7 +9,7 @@ export const mockMenu: menuAdmin[] = [
   {
     id: 2,
     name: 'Criar um projeto',
-    link: '/admin/projeto/criar',
+    link: '/admin/projetos/criar',
   },
   {
     id: 3,

@@ -94,15 +94,15 @@ export function useProjects() {
       if (ascOrDescTable.data === 'asc') {
         filtered.sort((a, b) => {
           return (
-            new Date(a.project.delivered_date).getTime() -
-            new Date(b.project.delivered_date).getTime()
+            new Date(a.project.created_at!).getTime() -
+            new Date(b.project.created_at!).getTime()
           )
         })
       } else {
         filtered.sort((a, b) => {
           return (
-            new Date(b.project.delivered_date).getTime() -
-            new Date(a.project.delivered_date).getTime()
+            new Date(b.project.created_at!).getTime() -
+            new Date(a.project.created_at!).getTime()
           )
         })
       }

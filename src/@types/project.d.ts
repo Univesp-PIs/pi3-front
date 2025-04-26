@@ -2,6 +2,7 @@ type IProject = {
   id: number
   name: string
   key?: string
+  created_at?: string
 }
 
 type IClient = {
@@ -29,9 +30,13 @@ type IInformation = {
   current_cost: number
   delivered_date: string
   current_date: string
+  start_date: string
 }
 
 export interface IResponseListProjects {
+  average_time?: {
+    ranking: number
+  }
   project: IProject
   client: IClient
   information: IInformation

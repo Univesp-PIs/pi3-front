@@ -1,11 +1,15 @@
 'use client'
 
-import { format } from 'date-fns'
-import { ptBR } from 'date-fns/locale'
-import { useRouter } from 'next/navigation'
-import { ChangeEvent, useContext, useEffect, useMemo, useState } from 'react'
-import { CircularProgressbar } from 'react-circular-progressbar'
-import { HiOutlineRefresh } from 'react-icons/hi'
+import {
+  Listbox,
+  ListboxButton,
+  ListboxOption,
+  ListboxOptions,
+} from '@headlessui/react'
+import { Fragment } from 'react'
+import { buildStyles, CircularProgressbar } from 'react-circular-progressbar'
+import { FaRegCircle } from 'react-icons/fa'
+import { HiOutlineCheckCircle, HiOutlineRefresh } from 'react-icons/hi'
 import {
   Bar,
   BarChart,
@@ -19,92 +23,32 @@ import {
   YAxis,
 } from 'recharts'
 
-import {
-  IProjectsFormatted,
-  IResponseListProjectsDelivered,
-} from '@/@types/graph'
 import { Button } from '@/components/Button'
-import { AdminContext } from '@/contexts/AdminContext'
+
+import { SkeletonDashboard } from './skeleton'
+import { useDashboard } from './useDashboard'
 
 export default function Dashboard() {
-  const { setTitleHeader } = useContext(AdminContext)
-  const yearNow = new Date().getFullYear()
+  const {
+    isFetchingDashboard,
+    isLoadingDashboard,
+    isLoadingListProjects,
+    dataDashboard,
+    dataListProjects,
+    yearsProject,
+    filterSelected,
+    router,
+    refetchDashboard,
+    setFilterSelected,
+  } = useDashboard()
 
-  const [projectsYear, setProjectsYear] = useState(yearNow.toString())
-  const [projects, setProjects] = useState<IProjectsFormatted[]>([])
+  const projectsOptions =
+    dataListProjects?.map((project) => ({
+      id: project.project.id,
+      name: project.project.name,
+    })) ?? []
 
-  const router = useRouter()
-
-  useEffect(() => {
-    setTitleHeader('Dashboard')
-  }, [setTitleHeader])
-
-  const dataProjects = useMemo(
-    () => ({
-      title: 'Projetos entregues',
-      data: [
-        { count: 10, date: '01/01/2025' },
-        { count: 20, date: '02/01/2024' },
-        { count: 25, date: '03/01/2022' },
-        { count: 15, date: '04/01/2026' },
-        { count: 18, date: '05/01/2023' },
-        { count: 23, date: '06/01/2022' },
-        { count: 34, date: '07/01/2021' },
-        { count: 34, date: '08/01/2020' },
-        { count: 34, date: '09/01/2025' },
-        { count: 34, date: '10/01/2025' },
-        { count: 34, date: '11/01/2025' },
-        { count: 34, date: '12/01/2025' },
-      ],
-    }),
-    [],
-  )
-
-  const data = [
-    { name: 'Jan', uv: 400, pv: 2400, amt: 2400 },
-    { name: 'Fev', uv: 300, pv: 1398, amt: 2210 },
-    { name: 'Mar', uv: 200, pv: 9800, amt: 2290 },
-    { name: 'Abr', uv: 278, pv: 3908, amt: 2000 },
-    { name: 'Mai', uv: 189, pv: 4800, amt: 2181 },
-    { name: 'Jun', uv: 239, pv: 3800, amt: 2500 },
-    { name: 'Jul', uv: 349, pv: 4300, amt: 2100 },
-    { name: 'Ago', uv: 349, pv: 4300, amt: 2100 },
-    { name: 'Set', uv: 349, pv: 4300, amt: 2100 },
-    { name: 'Out', uv: 349, pv: 4300, amt: 2100 },
-    { name: 'Nov', uv: 349, pv: 4300, amt: 2100 },
-    { name: 'Dez', uv: 349, pv: 4300, amt: 2100 },
-  ]
-
-  useEffect(() => {
-    function formatProjects(
-      data: IResponseListProjectsDelivered,
-    ): IProjectsFormatted[] {
-      const projectsFormatted = data.data
-        .filter((item) => item.date.split('/')[2] === projectsYear)
-        .sort(
-          (a, b) => Number(a.date.split('/')[1]) - Number(b.date.split('/')[1]),
-        )
-        .map((item) => ({
-          mes: format(new Date(item.date), 'MMM', { locale: ptBR }),
-          projetos: item.count,
-          data: data.title,
-        }))
-      return projectsFormatted
-    }
-
-    const response = formatProjects(dataProjects)
-    setProjects(response)
-  }, [projectsYear, dataProjects])
-
-  // criar array com os anos do dataProjects sem repetir
-  const yearsProject = dataProjects.data
-    .map((item) => item.date.split('/')[2])
-    .filter((value, index, self) => self.indexOf(value) === index)
-    .sort((a, b) => Number(b) - Number(a))
-
-  function handleChangeYear(event: ChangeEvent<HTMLSelectElement>) {
-    setProjectsYear(event.target.value)
-  }
+  if (isLoadingListProjects || isLoadingDashboard) return <SkeletonDashboard />
 
   return (
     <section className="w-full flex justify-center">
@@ -114,78 +58,199 @@ export default function Dashboard() {
             <div className="flex gap-4 items-center">
               <h3 className="text-lg font-semibold">Projetos entregues</h3>
               <select
-                className="p-2 border border-gray-300 rounded-md font-bold outline-none w-fit"
-                value={projectsYear}
-                onChange={handleChangeYear}
+                className="p-2 border border-gray-300 rounded-md font-bold outline-none w-fit cursor-pointer"
+                value={filterSelected.year}
+                onChange={(e) =>
+                  setFilterSelected((prev) => ({
+                    ...prev,
+                    year: Number(e.target.value),
+                  }))
+                }
               >
                 {yearsProject.map((year) => (
-                  <option key={year} value={year}>
+                  <option key={year} value={year} className="cursor-pointer">
                     {year}
                   </option>
                 ))}
               </select>
             </div>
-            <ResponsiveContainer height={400}>
-              <LineChart width={800} height={400} data={projects}>
-                <Line
-                  type="monotone"
-                  name="Projetos"
-                  dataKey="projetos"
-                  stroke="#8884d8"
-                  activeDot={{ r: 8 }}
-                />
-                <CartesianGrid stroke="#ccc" />
-                {/* começar com a primeira letra maiuscula */}
-                <XAxis
-                  dataKey="mes"
-                  tickFormatter={(value) =>
-                    value.charAt(0).toUpperCase() + value.slice(1)
-                  }
-                />
-                <XAxis dataKey="mes" />
-                <YAxis dataKey="projetos" />
-                {/* começar com a primeira letra maiuscula */}
-                <Tooltip cursor={{ strokeDasharray: '3 3' }} />
-              </LineChart>
-            </ResponsiveContainer>
+            {dataDashboard?.delivery_projects.data.length === 0 ? (
+              <div className="w-full h-full flex justify-center items-center">
+                <p className="text-gray-500">Nenhum dado encontrado</p>
+              </div>
+            ) : (
+              <ResponsiveContainer height={400}>
+                <LineChart
+                  width={800}
+                  height={400}
+                  data={dataDashboard?.delivery_projects.data ?? []}
+                >
+                  <Line
+                    type="monotone"
+                    name="Projetos"
+                    dataKey="count"
+                    stroke="#1C199D"
+                    activeDot={{ r: 8 }}
+                  />
+                  <CartesianGrid stroke="#ccc" />
+                  <XAxis dataKey="monthName" />
+                  <YAxis dataKey="count" />
+                  {/* começar com a primeira letra maiuscula */}
+                  <Tooltip cursor={{ strokeDasharray: '3 3' }} />
+                </LineChart>
+              </ResponsiveContainer>
+            )}
           </div>
           <div className="w-full h-full flex flex-col gap-4 items-start">
-            <h3 className="text-lg font-semibold">Estimado x Custo</h3>
-            <ResponsiveContainer height={400}>
-              <BarChart width={600} height={300} data={data}>
-                <XAxis dataKey="name" />
-                <YAxis />
-                <Legend />
-                <Bar dataKey="uv" barSize={30} fill="#8884d8" />
-                <Tooltip />
-              </BarChart>
-            </ResponsiveContainer>
+            <div className="flex gap-4 items-center relative">
+              <h3 className="text-lg font-semibold">Estimado x Custo</h3>
+              <Listbox
+                as="div"
+                value={filterSelected.projectsIds}
+                onChange={(selected) =>
+                  setFilterSelected({
+                    ...filterSelected,
+                    projectsIds: selected,
+                  })
+                }
+                multiple
+              >
+                <ListboxButton className="p-2 border border-gray-300 rounded-md font-bold outline-none w-fit bg-white">
+                  {filterSelected.projectsIds.length === 0
+                    ? 'Selecione os projetos'
+                    : projectsOptions
+                        .filter((p) =>
+                          filterSelected.projectsIds.includes(p.id),
+                        )
+                        .map((p) => p.name)
+                        .join(', ')}
+                </ListboxButton>
+                <ListboxOptions className="absolute z-50 mt-1 max-h-60 w-fit overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
+                  {projectsOptions.map((project) => (
+                    <ListboxOption
+                      key={project.id}
+                      value={project.id}
+                      as={Fragment}
+                    >
+                      {({ active, selected }) => (
+                        <li
+                          className={`list-none flex items-center cursor-pointer select-none relative py-2 pl-3 pr-4 ${
+                            active
+                              ? 'bg-blue-100 text-blue-900'
+                              : 'text-gray-900'
+                          }`}
+                        >
+                          <span className="mr-2">
+                            {selected ? (
+                              <HiOutlineCheckCircle
+                                className="text-blue-600"
+                                size={20}
+                              />
+                            ) : (
+                              <FaRegCircle
+                                className="text-gray-300"
+                                size={20}
+                              />
+                            )}
+                          </span>
+                          <span
+                            className={`block truncate ${
+                              selected ? 'font-bold' : 'font-normal'
+                            }`}
+                          >
+                            {project.name}
+                          </span>
+                        </li>
+                      )}
+                    </ListboxOption>
+                  ))}
+                </ListboxOptions>
+              </Listbox>
+            </div>
+            {dataDashboard?.cost.data.length === 0 ? (
+              <div className="w-full h-full flex justify-center items-center">
+                <p className="text-gray-500">Nenhum dado encontrado</p>
+              </div>
+            ) : (
+              <ResponsiveContainer height={400}>
+                <BarChart
+                  width={600}
+                  height={300}
+                  data={dataDashboard?.cost.data}
+                >
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="name" />
+                  <YAxis />
+                  <Legend />
+                  <Bar
+                    dataKey="cost_estimate"
+                    barSize={30}
+                    fill="#ED7B12"
+                    name="Custo estimado"
+                  />
+                  <Bar
+                    dataKey="current_cost"
+                    barSize={30}
+                    fill="#1C199D"
+                    name="Custo atual"
+                  />
+                  <Tooltip
+                    cursor={{
+                      fill: '#ccc',
+                      fillOpacity: 0.5,
+                      strokeOpacity: 0.5,
+                    }}
+                    formatter={(value) =>
+                      Intl.NumberFormat('pt-BR', {
+                        style: 'currency',
+                        currency: 'BRL',
+                      }).format(value as number)
+                    }
+                    labelFormatter={(label) => {
+                      const project = dataDashboard?.cost.data.find(
+                        (project) => project.name === label,
+                      )
+                      return `${project?.project.name}`
+                    }}
+                  />
+                </BarChart>
+              </ResponsiveContainer>
+            )}
           </div>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-5 gap-8 items-center">
           <div className="flex items-start gap-4 h-full justify-center shadow-xl hover:shadow-2xl duration-300 p-4 rounded-md">
             <CircularProgressbar
-              strokeWidth={10}
-              value={25}
-              styles={{
-                root: { width: 100 },
-              }}
+              strokeWidth={8}
+              value={dataDashboard?.percentage_projects_delivered.value ?? 0}
+              styles={buildStyles({
+                pathColor: '#1C199D', // Cor do progresso
+                trailColor: '#eee', // Cor do fundo
+                textColor: '#1C199D', // Cor do texto (se usar)
+              })}
             />
             <div className="flex flex-col gap-2">
-              <h3 className="font-bold text-3xl">65%</h3>
+              <h3 className="font-bold text-3xl">
+                {dataDashboard?.percentage_projects_delivered.value}%
+              </h3>
               <p>Projetos entregues no prazo</p>
             </div>
           </div>
           <div className="flex items-start gap-4 h-full justify-center shadow-xl hover:shadow-2xl duration-300 p-4 rounded-md flex-col">
-            <h3 className="font-bold text-3xl">30 (dias)</h3>
+            <h3 className="font-bold text-3xl">
+              {dataDashboard?.average_time_project.value.current_days.toFixed(
+                0,
+              ) ?? 0}{' '}
+              (dias)
+            </h3>
             <p>Tempo médio para finalizar um projeto</p>
           </div>
           <div className="w-full flex justify-center">
             <HiOutlineRefresh
               size={100}
-              title="Atualizar Projetos"
-              // className={`cursor-pointer ${isFetchingListProjects || isLoadingListProjects ? 'animate-spin' : ''}`}
-              // onClick={() => refetchListProjects()}
+              title="Atualizar Dashboard"
+              className={`cursor-pointer ${isFetchingDashboard || isLoadingListProjects ? 'animate-spin' : ''}`}
+              onClick={() => refetchDashboard()}
             />
           </div>
           <div className="flex items-start gap-4 h-full justify-center shadow-xl hover:shadow-2xl duration-300 p-4 rounded-md flex-col">
@@ -193,20 +258,26 @@ export default function Dashboard() {
               {Intl.NumberFormat('pt-BR', {
                 style: 'currency',
                 currency: 'BRL',
-              }).format(2000)}
+              }).format(
+                dataDashboard?.average_project_cost.value.current_cost ?? 0,
+              )}
             </h3>
             <p>Custo médio de um projeto</p>
           </div>
           <div className="flex items-start gap-4 h-full justify-center shadow-xl hover:shadow-2xl duration-300 p-4 rounded-md">
             <CircularProgressbar
-              strokeWidth={10}
-              value={98}
-              styles={{
-                root: { width: 100 },
-              }}
+              strokeWidth={8}
+              value={dataDashboard?.percentage_project_cost.value ?? 0}
+              styles={buildStyles({
+                pathColor: '#1C199D', // Cor do progresso
+                trailColor: '#eee', // Cor do fundo
+                textColor: '#1C199D', // Cor do texto (se usar)
+              })}
             />
             <div className="flex flex-col gap-2">
-              <h3 className="font-bold text-3xl">98%</h3>
+              <h3 className="font-bold text-3xl">
+                {dataDashboard?.percentage_project_cost.value ?? 0}%
+              </h3>
               <p>Projetos dentro do custo</p>
             </div>
           </div>

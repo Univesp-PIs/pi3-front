@@ -1,10 +1,11 @@
-import { mockProgress } from '@/mocks/mockProgress'
 import { addDays, format, isValid, parseISO } from 'date-fns'
-import { CgCloseO } from 'react-icons/cg'
 import { FC, useEffect, useState } from 'react'
-import { IResponseListStatus } from '@/@types/status'
-import { IResponseGetProject, ITimeline } from '@/@types/project'
+import { CgCloseO } from 'react-icons/cg'
 import { FaArrowLeft, FaArrowRight } from 'react-icons/fa6'
+
+import { IResponseGetProject, ITimeline } from '@/@types/project'
+import { IResponseListStatus } from '@/@types/status'
+import { mockProgress } from '@/mocks/mockProgress'
 
 interface DraggableProps {
   step: IResponseGetProject['timeline'][0]
