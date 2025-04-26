@@ -91,29 +91,18 @@ export function useProjects() {
         },
       )
 
-      if (ascOrDescTable.data === 'asc') {
+      // Ordena por data OU por nome, nunca os dois juntos
+      if (ascOrDescTable.data) {
         filtered.sort((a, b) => {
-          return (
-            new Date(a.project.created_at!).getTime() -
-            new Date(b.project.created_at!).getTime()
-          )
+          const dateA = new Date(a.project.created_at!).getTime()
+          const dateB = new Date(b.project.created_at!).getTime()
+          return ascOrDescTable.data === 'asc' ? dateA - dateB : dateB - dateA
         })
-      } else {
+      } else if (ascOrDescTable.project) {
         filtered.sort((a, b) => {
-          return (
-            new Date(b.project.created_at!).getTime() -
-            new Date(a.project.created_at!).getTime()
-          )
-        })
-      }
-      if (ascOrDescTable.project === 'asc') {
-        filtered.sort((a, b) => {
-          return a.project.name.localeCompare(b.project.name)
-        })
-      }
-      if (ascOrDescTable.project === 'desc') {
-        filtered.sort((a, b) => {
-          return b.project.name.localeCompare(a.project.name)
+          return ascOrDescTable.project === 'asc'
+            ? a.project.name.localeCompare(b.project.name)
+            : b.project.name.localeCompare(a.project.name)
         })
       }
 
@@ -124,8 +113,9 @@ export function useProjects() {
   // Função para ordenar projetos
   function handleSort(option: 'data' | 'project') {
     setAscOrDescTable((prev) => ({
-      ...prev,
-      [option]: prev[option] === 'asc' ? 'desc' : 'asc',
+      data: option === 'data' ? (prev.data === 'asc' ? 'desc' : 'asc') : '',
+      project:
+        option === 'project' ? (prev.project === 'asc' ? 'desc' : 'asc') : '',
     }))
   }
 

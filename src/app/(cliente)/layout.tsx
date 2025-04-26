@@ -1,8 +1,9 @@
+import 'react-vertical-timeline-component/style.min.css'
+
 import type { Metadata } from 'next'
+
 import { Footer } from '@/components/Footer'
 import { Header } from '@/components/Header'
-
-import 'react-vertical-timeline-component/style.min.css'
 
 export const metadata: Metadata = {
   title: 'EngSol - Consulte seu pedido',

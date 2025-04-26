@@ -1,8 +1,7 @@
 'use client'
 
-import { IResponseGetProject } from '@/@types/project'
-import { mockProgress } from '@/mocks/mockProgress'
 import { format, parse, parseISO } from 'date-fns'
+import { ptBR } from 'date-fns/locale'
 import { AiOutlineLoading3Quarters } from 'react-icons/ai'
 import { FaCheckCircle } from 'react-icons/fa'
 import { FaRegHourglassHalf } from 'react-icons/fa6'
@@ -10,7 +9,9 @@ import {
   VerticalTimeline,
   VerticalTimelineElement,
 } from 'react-vertical-timeline-component'
-import { ptBR } from 'date-fns/locale'
+
+import { IResponseGetProject } from '@/@types/project'
+import { mockProgress } from '@/mocks/mockProgress'
 
 const iconProgress = {
   done: <FaCheckCircle size={50} />,
