@@ -5,6 +5,7 @@ import { FaInfoCircle } from 'react-icons/fa'
 import { FaArrowDown, FaArrowUp } from 'react-icons/fa6'
 import { HiOutlineRefresh } from 'react-icons/hi'
 import { MdOutlineCopyAll } from 'react-icons/md'
+import { Tooltip as ReactTooltip } from 'react-tooltip'
 
 import { Button } from '@/components/Button'
 import { ModalGeneric } from '@/components/Modal'
@@ -51,8 +52,16 @@ export default function Projetos() {
             </Button>
             <FaInfoCircle
               size={25}
-              title="Como funciona os filtros?"
+              title="Informações sobre a classificação"
+              data-tooltip-id="info-tooltip"
+              data-tooltip-content="Classificação A-Z: Ordena os projetos em ordem alfabética. Classificação por Data: Ordena os projetos pela data de criação."
               className="cursor-pointer"
+            />
+            <ReactTooltip
+              id="info-tooltip"
+              place="top"
+              variant="dark"
+              className="bg-gray-800 text-white p-2 rounded-md"
             />
           </div>
           <div className="flex gap-4 items-center">

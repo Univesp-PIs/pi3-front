@@ -1,7 +1,8 @@
 'use client'
 
-import { mockLinks } from '@/mocks/mockLinks'
 import Link from 'next/link'
+
+import { mockLinks } from '@/mocks/mockLinks'
 
 export function ErrorOrder() {
   const { email, phone, whatsapp } = mockLinks

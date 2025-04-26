@@ -1,7 +1,8 @@
 'use client'
+import { useQuery } from '@tanstack/react-query'
+
 import { IResponseGetProject } from '@/@types/project'
 import { api } from '@/services/apiClient'
-import { useQuery } from '@tanstack/react-query'
 
 const fetchGetProject = async (id: string): Promise<IResponseGetProject> => {
   const { data } = await api.get<IResponseGetProject>(

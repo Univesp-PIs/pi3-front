@@ -1,13 +1,15 @@
 'use client'
 
-import { Button } from '@/components/Button'
-import { TimelineClient } from '@/components/Timeline'
-import { useGetProjectByKey } from '@/hooks/projects/getProjectByKey'
 import { useRouter } from 'next/navigation'
 import { useEffect } from 'react'
 import toast from 'react-hot-toast'
-import { SkeletonOrder } from './skeleton'
+
+import { Button } from '@/components/Button'
+import { TimelineClient } from '@/components/Timeline'
+import { useGetProjectByKey } from '@/hooks/projects/getProjectByKey'
+
 import { ErrorOrder } from './errorOrder'
+import { SkeletonOrder } from './skeleton'
 
 export default function PedidoStatus({ params }: { params: { slug: string } }) {
   const router = useRouter()

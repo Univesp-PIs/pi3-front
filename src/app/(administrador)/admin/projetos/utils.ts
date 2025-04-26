@@ -23,6 +23,21 @@ export function validateProject(data: IResponseGetProject): boolean {
     return true
   }
 
+  if (!data.information.current_cost) {
+    toast.error('O custo atual é obrigatório')
+    return true
+  }
+
+  if (!data.information.start_date) {
+    toast.error('A data de início é obrigatória')
+    return true
+  }
+
+  if (!data.information.delivered_date) {
+    toast.error('A data estimada de entrega é obrigatória')
+    return true
+  }
+
   const hasEmptyCondition = data.timeline.some(
     (step) =>
       !step.ranking.condition ||
@@ -47,6 +62,7 @@ export function formatedProject(
       name: data.project.name,
     },
     information: {
+      start_date: data.information.start_date,
       cost_estimate: data.information.cost_estimate,
       current_cost: data.information.current_cost,
       delivered_date: data.information.delivered_date,

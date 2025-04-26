@@ -7,10 +7,11 @@ import {
   useMenuState,
 } from '@szhsin/react-menu'
 import Link from 'next/link'
-import { RxHamburgerMenu } from 'react-icons/rx'
-import { mockMenu } from '@/mocks/mockMenu'
-import { useRef } from 'react'
 import { usePathname } from 'next/navigation'
+import { useRef } from 'react'
+import { RxHamburgerMenu } from 'react-icons/rx'
+
+import { mockMenu } from '@/mocks/mockMenu'
 
 export function MenuAdmin() {
   const ref = useRef(null)

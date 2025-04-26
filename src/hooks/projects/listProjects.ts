@@ -1,8 +1,9 @@
 'use client'
 
+import { useQuery } from '@tanstack/react-query'
+
 import { IResponseListProjects } from '@/@types/project'
 import { api } from '@/services/apiClient'
-import { useQuery } from '@tanstack/react-query'
 
 const fetchListProjects = async (): Promise<IResponseListProjects[]> => {
   const { data } = await api.get<IResponseListProjects[]>(
