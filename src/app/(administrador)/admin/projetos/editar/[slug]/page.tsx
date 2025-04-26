@@ -48,7 +48,9 @@ export default function EditarProjeto({
             <h3 className="text-2xl font-bold">
               {dataApiProject.average_time.ranking} (dias)
             </h3>
-            <p className="text-gray-400">Tempo médio para finalizar uma etapa</p>
+            <p className="text-gray-400">
+              Tempo médio para finalizar uma etapa
+            </p>
           </div>
         )}
       <section className="w-full flex justify-center items-center min-h-[calc(100vh-95.83px)]">

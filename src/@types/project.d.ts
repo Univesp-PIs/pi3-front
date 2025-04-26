@@ -33,6 +33,13 @@ type IInformation = {
   start_date: string
 }
 
+type IInformation = {
+  cost_estimate: number
+  current_cost: number
+  delivered_date: string
+  current_date: string
+}
+
 export interface IResponseListProjects {
   average_time?: {
     ranking: number
