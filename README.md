@@ -1,5 +1,7 @@
 Este é o frontend do sistema EngSol, desenvolvido em Next.js e React, para gestão de projetos de engenharia e acompanhamento de pedidos de clientes.
 
+![image](https://github.com/user-attachments/assets/79db3e09-faaf-4a37-b81e-6ae26592dadc)
+
 ## Índice
 
 - [Sobre o Projeto](#sobre-o-projeto)
