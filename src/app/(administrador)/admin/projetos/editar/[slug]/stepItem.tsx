@@ -1,4 +1,4 @@
-import { addDays, format, isValid, parseISO } from 'date-fns'
+import { isValid, parseISO } from 'date-fns'
 import { FC, useEffect, useState } from 'react'
 import { CgCloseO } from 'react-icons/cg'
 import { FaArrowLeft, FaArrowRight } from 'react-icons/fa6'
@@ -6,6 +6,7 @@ import { FaArrowLeft, FaArrowRight } from 'react-icons/fa6'
 import { IResponseGetProject, ITimeline } from '@/@types/project'
 import { IResponseListStatus } from '@/@types/status'
 import { mockProgress } from '@/mocks/mockProgress'
+import { toInputDate } from '@/utils'
 
 interface DraggableProps {
   step: IResponseGetProject['timeline'][0]
@@ -28,10 +29,7 @@ export const DraggableItemComponent: FC<DraggableProps> = ({
   dataApiProject,
   dataListStatus,
 }) => {
-  // Verificação e formatação inicial de `last_update`
-  const initialDate = isValid(new Date(step.ranking.last_update))
-    ? format(addDays(new Date(step.ranking.last_update), 1), 'yyyy-MM-dd')
-    : ''
+  const initialDate = toInputDate(step.ranking.last_update) ?? ''
 
   const [date, setDate] = useState(initialDate)
 
