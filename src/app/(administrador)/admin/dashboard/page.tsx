@@ -232,9 +232,12 @@ export default function Dashboard() {
           </div>
           <div className="flex items-start gap-4 h-full justify-center shadow-xl hover:shadow-2xl duration-300 p-4 rounded-md flex-col">
             <h3 className="font-bold text-3xl">
-              {dataDashboard?.average_time_project?.value.current_days.toFixed(
-                0,
-              ) ?? 0}{' '}
+              {dataDashboard?.average_time_project?.value.current_days &&
+              dataDashboard?.average_time_project?.value.current_days < 0
+                ? 0
+                : (dataDashboard?.average_time_project?.value.current_days.toFixed(
+                    0,
+                  ) ?? 0)}{' '}
               (dias)
             </h3>
             <p>Tempo médio para finalizar um projeto</p>

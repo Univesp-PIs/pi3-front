@@ -1,6 +1,7 @@
 import toast from 'react-hot-toast'
 
 import { ICreateProjectParams, IResponseGetProject } from '@/@types/project'
+import { toBackendDate } from '@/utils'
 
 export function validateProject(data: IResponseGetProject): boolean {
   if (!data.project.name) {
@@ -76,7 +77,7 @@ export function formatedProject(
       ranking: {
         id: Number(step.ranking.id) || 0,
         rank: String(index + 1),
-        last_update: step.ranking.last_update,
+        last_update: toBackendDate(step.ranking.last_update),
         note: step.ranking.note,
         description: step.ranking.description,
         condition: {
