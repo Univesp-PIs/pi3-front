@@ -24,6 +24,7 @@ export default function Projetos() {
     variablesDeleteProject,
     isCopied,
     ascOrDescTable,
+    getProjectStatus,
     handleSort,
     handleSearch,
     handleDeleteProject,
@@ -119,11 +120,7 @@ export default function Projetos() {
                     </td>
                     <td className="py-2 px-4">{project.client.name}</td>
                     <td className="py-2 px-4">{project.client.email}</td>
-                    <td className="py-2 px-4">
-                      {project?.timeline.find(
-                        (step) => step.ranking.note === 'in progress',
-                      )?.ranking.condition.name || 'Não iniciado'}
-                    </td>
+                    <td className="py-2 px-4">{getProjectStatus(project)}</td>
                     <td className="py-2 px-4 gap-4">
                       {project?.project.key}
                       {isCopied.status && isCopied.id === project.project.id ? (
