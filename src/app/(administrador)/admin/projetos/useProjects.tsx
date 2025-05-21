@@ -40,6 +40,29 @@ export function useProjects() {
     }, 2000)
   }
 
+  const getProjectStatus = (project: IResponseListProjects) => {
+    // Se todos os passos estão concluídos, o projeto está finalizado
+    const allProjectIsDone = project.timeline.every(
+      (step) => step.ranking.note === 'done',
+    )
+
+    if (allProjectIsDone) {
+      return 'Finalizado'
+    }
+
+    // Se algum passo está em progresso, mostra o nome desse status
+    const stepInProgress = project.timeline.find(
+      (step) => step.ranking.note === 'in progress',
+    )
+
+    if (stepInProgress) {
+      return stepInProgress.ranking.condition.name
+    }
+
+    // Se nenhum passo está em progresso e nem todos estão concluídos, o projeto não foi iniciado
+    return 'Não iniciado'
+  }
+
   const {
     data: dataListProjects,
     isLoading: isLoadingListProjects,
@@ -130,6 +153,7 @@ export function useProjects() {
     router,
     sortedProjects,
     isCopied,
+    getProjectStatus,
     handleSearch,
     handleSort,
     handleCopy,
