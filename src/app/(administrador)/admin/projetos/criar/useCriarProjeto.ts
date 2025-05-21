@@ -73,8 +73,6 @@ export function useCriarProjeto() {
 
     const formattedData = formatedProject(dataApiProject)
 
-    console.log('formattedData', formattedData)
-
     // Cria o projeto
     await mutateCreateProject(formattedData)
   }

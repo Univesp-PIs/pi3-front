@@ -4,8 +4,6 @@ import { ICreateProjectParams, IResponseGetProject } from '@/@types/project'
 import { toBackendDate } from '@/utils'
 
 export function validateProject(data: IResponseGetProject): boolean {
-  console.log('data', data)
-
   if (!data.project.name) {
     toast.error('O nome do projeto é obrigatório')
     return true
