@@ -1,5 +1,3 @@
-import { format } from 'date-fns'
-import { ptBR } from 'date-fns/locale'
 import { useRouter } from 'next/navigation'
 import { FormEvent, useContext, useEffect, useState } from 'react'
 
@@ -9,6 +7,7 @@ import { useDeleteProject } from '@/hooks/projects/deleteProject'
 import { useGetProject } from '@/hooks/projects/getProject'
 import { useUpdateProject } from '@/hooks/projects/updateProject'
 import { useListStatus } from '@/hooks/status/listStatus'
+import { toInputDate } from '@/utils'
 
 import { formatedProject, validateProject } from '../../utils'
 
@@ -108,12 +107,10 @@ export function useEditarProjeto({ params }: { params: { slug: string } }) {
           : 0
         ).toString(),
         condition: {
-          id: 0,
+          id: '0',
           name: '',
         },
-        last_update: format(new Date(), 'yyyy-MM-dd', {
-          locale: ptBR,
-        }),
+        last_update: toInputDate(new Date()),
         note: 'waiting',
         description: '',
       },

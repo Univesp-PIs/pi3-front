@@ -43,7 +43,7 @@ export function validateProject(data: IResponseGetProject): boolean {
     (step) =>
       !step.ranking.condition ||
       !step.ranking.condition.id ||
-      step.ranking.condition.id === 0,
+      step.ranking.condition.id === '0',
   )
 
   if (hasEmptyCondition) {
@@ -63,11 +63,11 @@ export function formatedProject(
       name: data.project.name,
     },
     information: {
-      start_date: data.information.start_date,
+      start_date: toBackendDate(data.information.start_date),
       cost_estimate: data.information.cost_estimate,
       current_cost: data.information.current_cost,
-      delivered_date: data.information.delivered_date,
-      current_date: data.information.current_date,
+      delivered_date: toBackendDate(data.information.delivered_date),
+      current_date: toBackendDate(data.information.current_date),
     },
     client: {
       name: data.client.name,

@@ -58,7 +58,7 @@ export const DraggableItemComponent: FC<DraggableProps> = ({
       <div className="flex flex-col gap-4 w-full">
         <select
           className="p-2 border border-gray-300 rounded-md font-bold outline-none"
-          value={step.ranking?.condition?.id ?? ''}
+          value={step.ranking?.condition?.id ?? '0'}
           onChange={(e) => {
             const updateStep = {
               ranking: {
@@ -77,7 +77,7 @@ export const DraggableItemComponent: FC<DraggableProps> = ({
             })
           }}
         >
-          <option value="" className="font-bold" disabled>
+          <option value="0" className="font-bold" disabled>
             Selecione uma opção
           </option>
           {dataListStatus

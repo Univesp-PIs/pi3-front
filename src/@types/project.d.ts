@@ -19,7 +19,7 @@ type ITimeline = {
     note: 'waiting' | 'in progress' | 'done'
     description: string
     condition: {
-      id: number
+      id: number | string
       name?: string
     }
   }
