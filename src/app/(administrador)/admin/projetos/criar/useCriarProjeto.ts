@@ -1,5 +1,3 @@
-import { format } from 'date-fns'
-import { ptBR } from 'date-fns/locale'
 import { useRouter } from 'next/navigation'
 import { FormEvent, useContext, useEffect, useState } from 'react'
 
@@ -7,6 +5,7 @@ import { IResponseGetProject } from '@/@types/project'
 import { AdminContext } from '@/contexts/AdminContext'
 import { useCreateProject } from '@/hooks/projects/createProject'
 import { useListStatus } from '@/hooks/status/listStatus'
+import { toInputDate } from '@/utils'
 
 import { formatedProject, validateProject } from '../utils'
 
@@ -32,30 +31,22 @@ export function useCriarProjeto() {
       id: 0,
     },
     information: {
-      start_date: format(new Date(), 'yyyy-MM-dd', {
-        locale: ptBR,
-      }),
+      start_date: toInputDate(new Date()),
       cost_estimate: 0,
       current_cost: 0,
-      delivered_date: format(new Date(), 'yyyy-MM-dd', {
-        locale: ptBR,
-      }),
-      current_date: format(new Date(), 'yyyy-MM-dd', {
-        locale: ptBR,
-      }),
+      delivered_date: toInputDate(new Date()),
+      current_date: toInputDate(new Date()),
     },
     timeline: [
       {
         ranking: {
           id: 0,
           rank: '1',
-          last_update: format(new Date(), 'yyyy-MM-dd', {
-            locale: ptBR,
-          }),
+          last_update: toInputDate(new Date()),
           note: 'waiting',
           description: '',
           condition: {
-            id: 0,
+            id: '0',
             name: '',
           },
         },
@@ -82,6 +73,8 @@ export function useCriarProjeto() {
 
     const formattedData = formatedProject(dataApiProject)
 
+    console.log('formattedData', formattedData)
+
     // Cria o projeto
     await mutateCreateProject(formattedData)
   }
@@ -104,12 +97,10 @@ export function useCriarProjeto() {
           : 0
         ).toString(),
         condition: {
-          id: 0,
+          id: '0',
           name: '',
         },
-        last_update: format(new Date(), 'yyyy-MM-dd', {
-          locale: ptBR,
-        }),
+        last_update: toInputDate(new Date()),
         note: 'waiting',
         description: '',
       },
