@@ -113,6 +113,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
         path: '/',
       })
 
+      api.defaults.headers.Authorization = `Bearer ${token}`
+
       setUser({
         user_id,
         user_email,
@@ -123,10 +125,10 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
       if (parseCookies()['engsol.token']) {
         toast.success('Login efetuado')
+        // Mova a navegação para depois da configuração do token
         router.push('/admin/projetos')
       }
 
-      api.defaults.headers.Authorization = `Bearer ${token}`
       return true
 
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
