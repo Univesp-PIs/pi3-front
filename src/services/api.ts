@@ -19,17 +19,14 @@ type FailedRequestQueue = {
 const failedRequestsQueue = Array<FailedRequestQueue>()
 
 export function setupAPIClient(ctx: Context = undefined) {
-  let cookies = parseCookies(ctx)
-
   const api = axios.create({
     baseURL: 'https://engsol-django-render.onrender.com',
-    headers: {
-      Authorization: `Bearer ${cookies['engsol.token']}`,
-    },
   })
 
   api.interceptors.request.use((config) => {
-    config.headers.Authorization = `Bearer ${cookies['engsol.token']}`
+    // Busca os cookies mais recentes em cada requisição
+    const updatedCookies = parseCookies(ctx)
+    config.headers.Authorization = `Bearer ${updatedCookies['engsol.token']}`
     return config
   })
 
@@ -47,7 +44,6 @@ export function setupAPIClient(ctx: Context = undefined) {
           router.reload()
           const originalConfig = error.config
           // renovar token
-          cookies = parseCookies()
 
           return new Promise((resolve, reject) => {
             failedRequestsQueue.push({
